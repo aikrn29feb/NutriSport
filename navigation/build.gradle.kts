@@ -6,8 +6,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    //
-    //alias(libs.plugins.google.services)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -26,7 +25,6 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "navigation"
             isStatic = true
-            //export(libs.kmp.notifier)
         }
     }
 
@@ -47,22 +45,13 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
-            implementation(libs.androidx.lifecycle.runtimeCompose) //implementation(libs.messagebar.kmp)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
 
 
             implementation(project(path = ":feature:auth"))
-            //
-            //implementation(libs.auth.kmp)
-            //implementation(libs.firebase.app)
+            implementation(libs.kotlinx.serialization)
+            implementation(libs.compose.navigation)
 
-            //implementation(libs.koin.compose)
-
-            //api(libs.kmp.notifier)
-
-            /*implementation(project(path = ":navigation"))
-            implementation(project(path = ":shared"))
-            implementation(project(path = ":di"))
-            implementation(project(path = ":data"))*/
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

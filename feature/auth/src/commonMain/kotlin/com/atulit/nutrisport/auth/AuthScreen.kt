@@ -23,8 +23,11 @@ import com.atulit.nutrisport.shared.Alpha
 import com.atulit.nutrisport.shared.BebasNeueFont
 import com.atulit.nutrisport.shared.FontSize
 import com.atulit.nutrisport.shared.Surface
+import com.atulit.nutrisport.shared.SurfaceBrand
+import com.atulit.nutrisport.shared.SurfaceError
 import com.atulit.nutrisport.shared.TextPrimary
 import com.atulit.nutrisport.shared.TextSecondary
+import com.atulit.nutrisport.shared.TextWhite
 import com.mmk.kmpauth.firebase.google.GoogleButtonUiContainerFirebase
 import rememberMessageBarState
 
@@ -42,7 +45,11 @@ fun AuthScreen() {
             ),
             contentBackgroundColor = Surface,
             messageBarState = messageBarState,
-            errorMaxLines = 2
+            errorMaxLines = 2,
+            errorContentColor = TextWhite,
+            errorContainerColor = SurfaceError,
+            successContentColor = TextPrimary,
+            successContainerColor = SurfaceBrand,
         ) {
             Column(modifier = Modifier
                 .padding(all = 24.dp)
