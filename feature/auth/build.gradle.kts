@@ -58,18 +58,6 @@ kotlin {
 
             implementation(project(path = ":shared"))
 
-            //
-            //implementation(libs.auth.kmp)
-            //implementation(libs.firebase.app)
-
-            //implementation(libs.koin.compose)
-
-            //api(libs.kmp.notifier)
-
-            /*implementation(project(path = ":navigation"))
-            implementation(project(path = ":shared"))
-            implementation(project(path = ":di"))
-            implementation(project(path = ":data"))*/
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -6,8 +6,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    //
-    //alias(libs.plugins.google.services)
 }
 
 kotlin {
@@ -24,14 +22,12 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "shared"
+            baseName = "di"
             isStatic = true
-            //export(libs.kmp.notifier)
         }
     }
 
     sourceSets {
-
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -42,6 +38,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -50,7 +49,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.atulit.nutrisport.shared"
+    namespace = "com.atulit.nutrisport.di"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
