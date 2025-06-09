@@ -9,6 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -21,12 +25,14 @@ import com.atulit.nutrisport.shared.FontSize
 import com.atulit.nutrisport.shared.Surface
 import com.atulit.nutrisport.shared.TextPrimary
 import com.atulit.nutrisport.shared.TextSecondary
+import com.mmk.kmpauth.firebase.google.GoogleButtonUiContainerFirebase
 import rememberMessageBarState
 
 @Composable
 fun AuthScreen() {
 
     val messageBarState = rememberMessageBarState()
+    var loadingState by remember { mutableStateOf(false) }
 
     Scaffold { padding ->
         ContentWithMessageBar(
@@ -70,12 +76,35 @@ fun AuthScreen() {
 
                 }
 
-                GoogleButton(
-                    loading = false,
-                    onClick = {
+                GoogleButtonUiContainerFirebase(
+                    linkAccount = false,
+                    onResult = { result ->
+                        result.onSuccess { user ->
+                            messageBarState.addSuccess("Successfully Authenticated!")
+                            loadingState = false
+                        }
+                        result.onFailure {error ->
+                            if(error.message?.contains("A Network error") == true) {
+                                messageBarState.addError("Internet connection unavailable")
+                            } else if(error.message?.contains("Id token is null") == true) {
+                                messageBarState.addError("Sign in cancelled.")
+                            } else {
+                                messageBarState.addError(error.message ?: "Unknown Error")
+                            }
+                            loadingState = false
 
+                            //messageBarState.addError(error)
+                        }
                     }
-                )
+                ) {
+                    GoogleButton(
+                        loading = loadingState,
+                        onClick = {
+                            loadingState = true
+                            this@GoogleButtonUiContainerFirebase.onClick()
+                        }
+                    )
+                }
 
             }
         }

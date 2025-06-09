@@ -1,6 +1,6 @@
 package com.atulit.nutrisport.auth.component
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
@@ -28,8 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.atulit.nutrisport.shared.FontSize
-import com.atulit.nutrisport.shared.Gray
-import com.atulit.nutrisport.shared.GrayDarker
 import com.atulit.nutrisport.shared.IconSecondary
 import com.atulit.nutrisport.shared.Resources
 import com.atulit.nutrisport.shared.SurfaceDarker
@@ -79,22 +77,25 @@ fun GoogleButton(
             verticalAlignment = Alignment.CenterVertically,
         )
         {
-            AnimatedVisibility(visible = !loading) {
-                Icon(
-                    painter = painterResource(icon),
-                    contentDescription = "Google Logo",
-                    tint = Color.Unspecified
-                )
-            }
-            AnimatedVisibility(
-                visible = loading,
+            AnimatedContent(
+                targetState = loading,
+                modifier = Modifier.padding(end = 12.dp)
             ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.padding(horizontal = 12.dp),
-                    color = progressIndicatorColor,
-                    strokeWidth = 2.dp,
-                )
+                if (!loading) {
+                    Icon(
+                        painter = painterResource(icon),
+                        contentDescription = "Google Logo",
+                        tint = Color.Unspecified
+                    )
+                } else {
+                    CircularProgressIndicator(
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        color = progressIndicatorColor,
+                        strokeWidth = 2.dp,
+                    )
+                }
             }
+
             Spacer(modifier = Modifier.padding(12.dp))
             Text(
                 text = buttonText,
