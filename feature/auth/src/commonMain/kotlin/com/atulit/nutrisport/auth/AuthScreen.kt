@@ -29,10 +29,12 @@ import com.atulit.nutrisport.shared.TextPrimary
 import com.atulit.nutrisport.shared.TextSecondary
 import com.atulit.nutrisport.shared.TextWhite
 import com.mmk.kmpauth.firebase.google.GoogleButtonUiContainerFirebase
+import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
 
 @Composable
 fun AuthScreen() {
+    val viewModel = koinViewModel<AuthViewModel> ()
 
     val messageBarState = rememberMessageBarState()
     var loadingState by remember { mutableStateOf(false) }
@@ -87,7 +89,18 @@ fun AuthScreen() {
                     linkAccount = false,
                     onResult = { result ->
                         result.onSuccess { user ->
-                            messageBarState.addSuccess("Successfully Authenticated!")
+                            viewModel.createCustomer(
+                                user = user,
+                                onSuccess = {
+                                    messageBarState.addSuccess("Successfully Authenticated!")
+                                    loadingState = false
+                                },
+                                onError = { error ->
+                                    messageBarState.addError(error)
+                                    loadingState = false
+                                }
+                            )
+
                             loadingState = false
                         }
                         result.onFailure {error ->

@@ -6,8 +6,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    //
-    //alias(libs.plugins.google.services)
 }
 
 kotlin {
@@ -26,7 +24,6 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "auth"
             isStatic = true
-            //export(libs.kmp.notifier)
         }
     }
 
@@ -55,8 +52,12 @@ kotlin {
             implementation(libs.auth.kmp)
             implementation(libs.auth.firebase.kmp)
 
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+
 
             implementation(project(path = ":shared"))
+            implementation(project(path = ":data"))
 
         }
         commonTest.dependencies {
