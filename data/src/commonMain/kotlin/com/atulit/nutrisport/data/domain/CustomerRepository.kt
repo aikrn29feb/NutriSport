@@ -9,4 +9,7 @@ interface CustomerRepository {
         onSuccess: ()-> Unit,
         onError: (String)-> Unit,
     )
+
+
+    fun getCustomerId(): String?
 }

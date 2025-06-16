@@ -5,6 +5,7 @@ import com.atulit.nutrisport.shared.domain.Customer
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
 import dev.gitlive.firebase.auth.FirebaseUser
+import dev.gitlive.firebase.auth.auth
 
 class CustomerRepositoryImpl : CustomerRepository {
 
@@ -40,6 +41,10 @@ class CustomerRepositoryImpl : CustomerRepository {
             onError("Error while creating customer - ${e.message.toString()}")
 
         }
+    }
+
+    override fun getCustomerId(): String? {
+        return Firebase.auth.currentUser?.uid
     }
 
 }

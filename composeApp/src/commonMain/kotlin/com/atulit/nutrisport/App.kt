@@ -10,17 +10,28 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.atulit.nutrisport.data.domain.CustomerRepository
+import com.atulit.nutrisport.navigation.Screen
 import com.atulit.nutrisport.navigation.SetupNavGraph
 import com.atulit.nutrisport.shared.Constants
 import com.mmk.kmpauth.google.GoogleAuthCredentials
 import com.mmk.kmpauth.google.GoogleAuthProvider
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
+        val customerRepository = koinInject<CustomerRepository>()
+        val isUserAuthenticated = remember { customerRepository.getCustomerId() != null }
         var appReady by remember { mutableStateOf(false) }
+
+        val startDestination = if (isUserAuthenticated) {
+            Screen.HomeGraph
+        } else {
+            Screen.Auth
+        }
 
         LaunchedEffect(Unit) {
             GoogleAuthProvider.create(
@@ -35,7 +46,7 @@ fun App() {
             modifier = Modifier.fillMaxSize(),
             visible = appReady
         ) {
-            SetupNavGraph()
+            SetupNavGraph(startDestination = startDestination)
         }
     }
 }
