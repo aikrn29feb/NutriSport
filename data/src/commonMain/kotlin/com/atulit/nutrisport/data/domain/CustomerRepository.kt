@@ -1,5 +1,6 @@
 package com.atulit.nutrisport.data.domain
 
+import com.atulit.nutrisport.shared.util.RequestState
 import dev.gitlive.firebase.auth.FirebaseUser
 
 interface CustomerRepository {
@@ -12,4 +13,6 @@ interface CustomerRepository {
 
 
     fun getCustomerId(): String?
+
+    suspend fun signOut(): RequestState<Unit>
 }

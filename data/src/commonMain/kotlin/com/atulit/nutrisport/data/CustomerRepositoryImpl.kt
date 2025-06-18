@@ -2,6 +2,7 @@ package com.atulit.nutrisport.data
 
 import com.atulit.nutrisport.data.domain.CustomerRepository
 import com.atulit.nutrisport.shared.domain.Customer
+import com.atulit.nutrisport.shared.util.RequestState
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
 import dev.gitlive.firebase.auth.FirebaseUser
@@ -46,5 +47,15 @@ class CustomerRepositoryImpl : CustomerRepository {
     override fun getCustomerId(): String? {
         return Firebase.auth.currentUser?.uid
     }
+
+    override suspend fun signOut(): RequestState<Unit> {
+        return try {
+            Firebase.auth.signOut()
+            RequestState.Success(data = Unit)
+        } catch (e: Exception) {
+            RequestState.Error("Error while signing out ${e.message}")
+        }
+    }
+
 
 }

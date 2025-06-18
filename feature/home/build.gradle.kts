@@ -51,6 +51,8 @@ kotlin {
 
             // Nested Navigation
             implementation(libs.compose.navigation)
+            // message bar kmp
+            implementation(libs.messagebar.kmp)
 
             implementation(project(path = ":shared"))
             implementation(project(path = ":data"))

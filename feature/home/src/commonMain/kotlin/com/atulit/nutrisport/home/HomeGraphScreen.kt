@@ -1,5 +1,6 @@
 package com.atulit.nutrisport.home
 
+import ContentWithMessageBar
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -53,15 +54,20 @@ import com.atulit.nutrisport.shared.TextPrimary
 import com.atulit.nutrisport.shared.navigation.Screen
 import com.atulit.nutrisport.shared.util.getScreenWidth
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
+import rememberMessageBarState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeGraphScreen() {
+fun HomeGraphScreen(
+    navigateToAuth: () -> Unit
+) {
 
     val navController = rememberNavController()
     val startDestination = Screen.ProductsOverview
     val currentDestination = navController.currentBackStackEntryAsState()
-    //var selectedDestination by remember { mutableStateOf(BottomBarDestination.ProductsOverview) }
+    val viewModel = koinViewModel<HomeGraphViewModel>()
+    val messageBarState = rememberMessageBarState()
 
     val selectedDestination by remember {
         derivedStateOf {
@@ -103,7 +109,16 @@ fun HomeGraphScreen() {
         CustomDrawer(
             onProfileClick = {},
             onContactUsClick = {},
-            onSignOutClick = {},
+            onSignOutClick = {
+                viewModel.signOut(
+                    onSuccess = {
+                        messageBarState.addSuccess("Sign out successful")
+                        navigateToAuth()
+                    }, onError = { message ->
+                        messageBarState.addError(message)
+                    }
+                )
+            },
             onAdminPanelClick = {}
         )
 
@@ -153,7 +168,8 @@ fun HomeGraphScreen() {
                                 IconButton(onClick = {
                                     drawerState = drawerState.opposite()
                                 }) {
-                                    val res = if(drawerState.isOpened()) Resources.Icon.Close else Resources.Icon.Menu
+                                    val res =
+                                        if (drawerState.isOpened()) Resources.Icon.Close else Resources.Icon.Menu
                                     Icon(
                                         painter = painterResource(res),
                                         contentDescription = "Menu",
@@ -171,87 +187,94 @@ fun HomeGraphScreen() {
                         )
                     }) { padding ->
 
-                Column(
+                ContentWithMessageBar(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(
                             top = padding.calculateTopPadding(),
                             bottom = padding.calculateBottomPadding()
-                        )
-
+                        ),
+                    messageBarState = messageBarState,
+                    errorMaxLines = 2,
+                    contentBackgroundColor = Surface
                 ) {
-                    NavHost(
-                        modifier = Modifier.weight(1f),
-                        navController = navController,
-                        startDestination = startDestination
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+
                     ) {
-                        composable<Screen.ProductsOverview> {
-                            AnimatedContent(
-                                targetState = selectedDestination,
-                            ) {
+                        NavHost(
+                            modifier = Modifier.weight(1f),
+                            navController = navController,
+                            startDestination = startDestination
+                        ) {
+                            composable<Screen.ProductsOverview> {
+                                AnimatedContent(
+                                    targetState = selectedDestination,
+                                ) {
 
-                                Text(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .background(Surface),
-                                    text = "Products Overview",
-                                    color = TextPrimary,
+                                    Text(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .background(Surface),
+                                        text = "Products Overview",
+                                        color = TextPrimary,
 
-                                )
-                            }
-                        }
-                        composable<Screen.Cart> {
-                            AnimatedContent(
-                                targetState = selectedDestination,
-                            ) {
-
-                                Text(
-                                    text = "Cart",
-                                    color = TextPrimary,
-                                )
-                            }
-                        }
-                        composable<Screen.Categories> {
-                            AnimatedContent(
-                                targetState = selectedDestination,
-                            ) {
-
-                                Text(
-                                    text = "Categories",
-                                    color = TextPrimary,
-                                )
-                            }
-                        }
-
-                    }
-
-                    Spacer(modifier = Modifier.weight(1f))
-                    Box(
-                        modifier = Modifier.padding(
-                            start = 12.dp,
-                            end = 12.dp,
-                        )
-                    ) {
-
-                        BottomBar(
-                            selected = selectedDestination,
-                            onSelect = { destination ->
-
-                                navController.navigate(destination.screen) {
-                                    launchSingleTop = true
-                                    popUpTo(Screen.ProductsOverview) {
-                                        saveState = true
-                                        inclusive = false
-                                    }
-                                    restoreState = true
+                                        )
                                 }
-
                             }
-                        )
+                            composable<Screen.Cart> {
+                                AnimatedContent(
+                                    targetState = selectedDestination,
+                                ) {
+
+                                    Text(
+                                        text = "Cart",
+                                        color = TextPrimary,
+                                    )
+                                }
+                            }
+                            composable<Screen.Categories> {
+                                AnimatedContent(
+                                    targetState = selectedDestination,
+                                ) {
+
+                                    Text(
+                                        text = "Categories",
+                                        color = TextPrimary,
+                                    )
+                                }
+                            }
+
+                        }
+
+                        Spacer(modifier = Modifier.weight(1f))
+                        Box(
+                            modifier = Modifier.padding(
+                                start = 12.dp,
+                                end = 12.dp,
+                            )
+                        ) {
+
+                            BottomBar(
+                                selected = selectedDestination,
+                                onSelect = { destination ->
+
+                                    navController.navigate(destination.screen) {
+                                        launchSingleTop = true
+                                        popUpTo(Screen.ProductsOverview) {
+                                            saveState = true
+                                            inclusive = false
+                                        }
+                                        restoreState = true
+                                    }
+
+                                }
+                            )
+                        }
+
                     }
-
                 }
-
             }
         }
     }
