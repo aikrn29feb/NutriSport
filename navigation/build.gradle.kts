@@ -40,7 +40,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-
+            implementation(project(path = ":shared"))
             implementation(project(path = ":feature:auth"))
             implementation(project(path = ":feature:home"))
             implementation(libs.kotlinx.serialization)

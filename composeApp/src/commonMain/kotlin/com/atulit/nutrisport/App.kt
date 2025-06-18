@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.atulit.nutrisport.data.domain.CustomerRepository
-import com.atulit.nutrisport.navigation.Screen
+import com.atulit.nutrisport.shared.navigation.Screen
 import com.atulit.nutrisport.navigation.SetupNavGraph
 import com.atulit.nutrisport.shared.Constants
 import com.mmk.kmpauth.google.GoogleAuthCredentials

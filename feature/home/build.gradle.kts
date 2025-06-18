@@ -49,6 +49,9 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
 
+            // Nested Navigation
+            implementation(libs.compose.navigation)
+
             implementation(project(path = ":shared"))
             implementation(project(path = ":data"))
 
