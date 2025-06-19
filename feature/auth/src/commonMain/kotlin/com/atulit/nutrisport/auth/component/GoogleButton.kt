@@ -27,10 +27,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.atulit.nutrisport.shared.BorderIdle
 import com.atulit.nutrisport.shared.FontSize
 import com.atulit.nutrisport.shared.IconSecondary
 import com.atulit.nutrisport.shared.Resources
-import com.atulit.nutrisport.shared.SurfaceDarker
 import com.atulit.nutrisport.shared.SurfaceLighter
 import com.atulit.nutrisport.shared.TextPrimary
 import org.jetbrains.compose.resources.DrawableResource
@@ -46,7 +46,7 @@ fun GoogleButton(
     icon: DrawableResource = Resources.Image.GoogleLogo,
     shape: Shape = RoundedCornerShape(size = 99.dp),
     backgroundColor: Color = SurfaceLighter,
-    borderColor: Color = SurfaceDarker,
+    borderColor: Color = BorderIdle,
     progressIndicatorColor: Color = IconSecondary,
 ) {
     var buttonText by remember { mutableStateOf(primaryText) }
