@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.atulit.nutrisport.shared.BorderIdle
 import com.atulit.nutrisport.shared.FontSize
 import com.atulit.nutrisport.shared.SurfaceLighter
+import com.atulit.nutrisport.shared.TextPrimary
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -26,8 +28,7 @@ fun AlertTextField(
     modifier: Modifier = Modifier,
     text: String,
     icon: DrawableResource? = null,
-    onClick : ( ) -> Unit,
-
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -35,28 +36,28 @@ fun AlertTextField(
             .border(
                 width = 1.dp,
                 color = BorderIdle,
-                shape = RoundedCornerShape(6.dp)
+                shape = RoundedCornerShape(size = 6.dp)
             )
-            .clip(
-                shape = RoundedCornerShape(6.dp)
-            )
-            .clickable { onClick() },
-        verticalAlignment = Alignment.CenterVertically,
-    ){
+            .clip(RoundedCornerShape(6.dp))
+            .clickable { onClick() }
+            .padding(
+                vertical = 16.dp,
+                horizontal = 16.dp
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         if (icon != null) {
             Image(
-                painter = painterResource(icon),
                 modifier = Modifier.size(14.dp),
-                contentDescription = "Text field Icon"
+                painter = painterResource(icon),
+                contentDescription = "Text field icon"
             )
             Spacer(modifier = Modifier.width(8.dp))
         }
-
         Text(
             text = text,
-            modifier = Modifier.weight(1f),
-            fontSize = FontSize.REGULAR
+            fontSize = FontSize.REGULAR,
+            color = TextPrimary
         )
-        
     }
 }

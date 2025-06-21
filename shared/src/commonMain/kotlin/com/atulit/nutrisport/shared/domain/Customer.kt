@@ -8,6 +8,7 @@ data class Customer(
     val firstName: String,
     val lastName: String,
     val email: String,
+    val photoURL: String? = null,
     val city: String? = null,
     val postalCode: Int? = null,
     val address: String? = null,

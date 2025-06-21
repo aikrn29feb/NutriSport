@@ -47,12 +47,16 @@ fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
 
         composable<Screen.Profile> {
             ProfileScreen(
+
                 navigateToHome = {
                     navController.navigate(Screen.HomeGraph) {
                         popUpTo(Screen.Profile) {
                             inclusive = true
                         }
                     }
+                },
+                navigateBack = {
+                    navController.navigateUp()
                 }
             )
         }
