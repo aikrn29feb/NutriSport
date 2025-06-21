@@ -35,7 +35,6 @@ import com.atulit.nutrisport.shared.util.DisplayResult
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
-import kotlin.coroutines.EmptyCoroutineContext.get
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -125,20 +124,20 @@ fun ProfileScreen(
                             ProfileForm(
                                 modifier = Modifier.weight(1f),
                                 country = screenState.country,
-                                onCountrySelect = { viewModel::updateCountry },
+                                onCountrySelect = viewModel::updateCountry ,
                                 firstName = screenState.firstName,
-                                onFirstNameChange = { viewModel::updateFirstName },
+                                onFirstNameChange = viewModel::updateFirstName,
                                 lastName = screenState.lastName,
-                                onLastNameChange = { viewModel::updateLastName },
+                                onLastNameChange =  viewModel::updateLastName ,
                                 email = screenState.email,
                                 city = screenState.city,
-                                onCityChange = { viewModel::updateCity },
+                                onCityChange =  viewModel::updateCity ,
                                 postalCode = screenState.postalCode,
-                                onPostalCodeChange = { viewModel::updatePostalCode },
+                                onPostalCodeChange =  viewModel::updatePostalCode ,
                                 address = screenState.address,
-                                onAddressChange = { viewModel::updateAddress },
+                                onAddressChange =  viewModel::updateAddress ,
                                 phoneNumber = "${screenState.phoneNumber?.number}",
-                                onPhoneNumberChange = { viewModel::updatePhoneNumber },
+                                onPhoneNumberChange = viewModel::updatePhoneNumber,
                             )
 
                             Spacer(modifier = Modifier.height(12.dp))

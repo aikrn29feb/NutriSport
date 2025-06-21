@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.atulit.nutrisport.shared.component.dialog.CountryPickerDialog
@@ -100,7 +101,7 @@ fun ProfileForm(
             value = address ?: "",
             onValueChange = onAddressChange,
             placeholder = "Address",
-            error = address?.length !in 3..50
+            error = address?.length !in 3..150
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -116,9 +117,10 @@ fun ProfileForm(
                 value = phoneNumber ?: "",
                 onValueChange = onPhoneNumberChange,
                 placeholder = "Phone Number",
-                error = phoneNumber.toString().length !in 5..10,
+                error = phoneNumber.toString().length !in 5..30,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
                 )
             )
         }

@@ -41,7 +41,7 @@ class ProfileViewModel(
                     lastName.length in 3..50 &&
                     city?.length in 3..50 &&
                     postalCode != null || postalCode?.toString()?.length in 3..8 &&
-                    address?.length in 3..50 &&
+                    address?.length in 3..150 &&
                     phoneNumber?.number?.length in 5..10
         }
 
