@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -15,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.atulit.nutrisport.shared.BebasNeueFont
+import com.atulit.nutrisport.shared.ButtonPrimary
 import com.atulit.nutrisport.shared.FontSize
 import com.atulit.nutrisport.shared.IconPrimary
 import com.atulit.nutrisport.shared.Resources
@@ -32,6 +34,7 @@ fun AdminPanelScreen(
 
     Scaffold(
         contentColor = Surface,
+        containerColor = Surface,
         topBar =
             {
                 TopAppBar(
@@ -46,6 +49,19 @@ fun AdminPanelScreen(
                                 fontSize = FontSize.LARGE
                             )
                         }
+                    },
+                    actions = {
+                        IconButton(onClick = {
+
+                        }) {
+                            val res = Resources.Icon.Search
+                            Icon(
+                                painter = painterResource(res),
+                                contentDescription = "Search Icon",
+                                tint = TextPrimary
+                            )
+                        }
+
                     },
                     navigationIcon = {
                         IconButton(onClick = {
@@ -68,7 +84,23 @@ fun AdminPanelScreen(
                         actionIconContentColor = IconPrimary
                     )
                 )
-            }) { padding ->
+            },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {},
+                containerColor = ButtonPrimary,
+                contentColor = IconPrimary,
+                content = {
+                    val res = Resources.Icon.Plus
+                    Icon(
+                        painter = painterResource(res),
+                        contentDescription = "Add Icon",
+                        tint = IconPrimary
+                    )
+                }
+            )
+
+        }) { padding ->
 
         InfoCard(
             modifier = Modifier
@@ -81,7 +113,6 @@ fun AdminPanelScreen(
             subTitle = "This is the admin panel",
             image = Resources.Image.ShoppingCart
         )
-
 
 
     }
