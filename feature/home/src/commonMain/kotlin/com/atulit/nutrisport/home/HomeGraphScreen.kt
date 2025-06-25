@@ -62,6 +62,7 @@ import rememberMessageBarState
 fun HomeGraphScreen(
     navigateToAuth: () -> Unit,
     navigateToProfile: () -> Unit,
+    navigateToAdmin: () -> Unit
 ) {
 
     val navController = rememberNavController()
@@ -122,7 +123,9 @@ fun HomeGraphScreen(
                     }
                 )
             },
-            onAdminPanelClick = {}
+            onAdminPanelClick = {
+                navigateToAdmin()
+            }
         )
 
         Box(

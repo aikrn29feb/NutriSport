@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.atulit.nutrisport.admin_panel.AdminPanelScreen
 import com.atulit.nutrisport.auth.AuthScreen
 import com.atulit.nutrisport.home.HomeGraphScreen
 import com.atulit.nutrisport.profile.ProfileScreen
@@ -41,6 +42,9 @@ fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
                 },
                 navigateToProfile = {
                     navController.navigate(Screen.Profile)
+                },
+                navigateToAdmin = {
+                    navController.navigate(Screen.AdminPanel)
                 }
             )
         }
@@ -59,6 +63,14 @@ fun SetupNavGraph(startDestination: Screen = Screen.Auth) {
                     navController.navigateUp()
                 }
             )
+        }
+        composable<Screen.AdminPanel> {
+            AdminPanelScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+
         }
 
     }

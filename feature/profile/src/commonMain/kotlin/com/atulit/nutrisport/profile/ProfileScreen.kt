@@ -28,6 +28,7 @@ import com.atulit.nutrisport.shared.Resources
 import com.atulit.nutrisport.shared.Surface
 import com.atulit.nutrisport.shared.TextPrimary
 import com.atulit.nutrisport.shared.component.ErrorCard
+import com.atulit.nutrisport.shared.component.InfoCard
 import com.atulit.nutrisport.shared.component.LoadingCard
 import com.atulit.nutrisport.shared.component.PrimaryButton
 import com.atulit.nutrisport.shared.component.ProfileForm
@@ -164,10 +165,12 @@ fun ProfileScreen(
 
                     },
                     onError = { errorMessage ->
-                        ErrorCard(
+
+                        InfoCard(
                             modifier = Modifier.fillMaxSize(),
-                            message = errorMessage,
-                            fontSize = FontSize.REGULAR
+                            title = "Error",
+                            subTitle = errorMessage,
+                            image = Resources.Image.Cat
                         )
                         messageBarState.addError(errorMessage)
                     },
