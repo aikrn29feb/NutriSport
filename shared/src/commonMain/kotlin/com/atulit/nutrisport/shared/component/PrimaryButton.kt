@@ -3,7 +3,6 @@ package com.atulit.nutrisport.shared.component
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,8 +31,7 @@ fun PrimaryButton(
     icon: DrawableResource? = null,
 ) {
     Button(
-        modifier = modifier.fillMaxWidth()
-            .padding(16.dp),
+        modifier = modifier.fillMaxWidth(),
         onClick = onClick,
         enabled = enabled,
         shape = RoundedCornerShape(6.dp),

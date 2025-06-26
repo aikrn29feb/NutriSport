@@ -28,8 +28,10 @@ import org.jetbrains.compose.resources.painterResource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminPanelScreen(
-    navigateBack: () -> Unit
-) {
+    navigateBack: () -> Unit,
+    navigateToManageProduct: (String?) -> Unit,
+
+    ) {
     val selectedDestination = remember { mutableStateOf("Admin Panel") }
 
     Scaffold(
@@ -87,7 +89,9 @@ fun AdminPanelScreen(
             },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {},
+                onClick = {
+                    navigateToManageProduct(null)
+                },
                 containerColor = ButtonPrimary,
                 contentColor = IconPrimary,
                 content = {

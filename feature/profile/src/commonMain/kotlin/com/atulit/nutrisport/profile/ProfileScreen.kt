@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,7 +28,6 @@ import com.atulit.nutrisport.shared.IconPrimary
 import com.atulit.nutrisport.shared.Resources
 import com.atulit.nutrisport.shared.Surface
 import com.atulit.nutrisport.shared.TextPrimary
-import com.atulit.nutrisport.shared.component.ErrorCard
 import com.atulit.nutrisport.shared.component.InfoCard
 import com.atulit.nutrisport.shared.component.LoadingCard
 import com.atulit.nutrisport.shared.component.PrimaryButton
@@ -113,7 +113,8 @@ fun ProfileScreen(
                     ).padding(
                         top = 12.dp,
                         bottom = 12.dp
-                    ),
+                    )
+                    .imePadding(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             )
             {
