@@ -30,6 +30,7 @@ kotlin {
     sourceSets {
         // respective client ktor dependencies for platform specific
         androidMain.dependencies {
+            implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.android.client)
         }
         iosMain.dependencies {
@@ -52,11 +53,13 @@ kotlin {
             implementation(libs.compose.navigation)
             // message bar kmp
             implementation(libs.messagebar.kmp)
+            // firebase storage
+            implementation(libs.firebase.storage)
 
             implementation(project(path = ":shared"))
             implementation(project(path = ":data"))
 
-            //adding coil compose for image loading
+            // adding coil compose for image loading
             implementation(libs.coil3)
             implementation(libs.coil3.compose)
             implementation(libs.coil3.compose.core)
