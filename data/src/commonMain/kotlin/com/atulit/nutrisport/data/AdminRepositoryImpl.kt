@@ -21,7 +21,7 @@ class AdminRepositoryImpl : AdminRepository {
     ) {
         try {
 
-            getCurrentUserId() ?.let {
+            getCurrentUserId()?.let {
                 val firestore = Firebase.firestore
                 val productCollection = firestore.collection(
                     collectionPath = "products"
@@ -46,14 +46,56 @@ class AdminRepositoryImpl : AdminRepository {
         return if (getCurrentUserId() != null) {
             val storage = Firebase.storage.reference
             val imagePath = storage.child("images/${Uuid.random().toHexString()}")
-            try{
+            try {
                 withTimeout(timeMillis = 20000L) {
                     imagePath.putFile(file)
                     imagePath.getDownloadUrl()
                 }
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 null
             }
         } else null
+    }
+
+    override suspend fun deleteImageFromStorage(
+        downloadUrl: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val storagePath = extractFirebaseStoragePath(downloadUrl)
+            storagePath?.let {
+                Firebase.storage.reference(it).delete()
+                onSuccess()
+            }
+                ?: onError("Error while deleting image from storage")
+            onSuccess()
+
+        } catch (e: Exception) {
+            onError("Error while deleting image from storage : ${e.message}")
+        }
+
+    }
+
+
+    private fun extractFirebaseStoragePath(downloadUrl: String): String? {
+        val startIndex = downloadUrl.indexOf("o/") + 2
+        if (startIndex < 3) {
+            return null
+        }
+        val endIndex = downloadUrl.indexOf("?", startIndex)
+        val encodePath = if (endIndex != -1) {
+            downloadUrl.substring(startIndex, endIndex)
+        } else {
+            downloadUrl.substring(startIndex, endIndex)
+        }
+        return decodeFirebasePath(encodePath)
+
+    }
+
+    private fun decodeFirebasePath(encodedPath: String): String {
+        return encodedPath
+            .replace("%2F", "/")
+            .replace("%20", " ")
     }
 }

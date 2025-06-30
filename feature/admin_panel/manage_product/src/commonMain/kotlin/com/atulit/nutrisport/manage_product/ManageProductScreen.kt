@@ -50,6 +50,7 @@ import com.atulit.nutrisport.shared.FontSize
 import com.atulit.nutrisport.shared.IconPrimary
 import com.atulit.nutrisport.shared.Resources
 import com.atulit.nutrisport.shared.Surface
+import com.atulit.nutrisport.shared.SurfaceBrand
 import com.atulit.nutrisport.shared.SurfaceDarker
 import com.atulit.nutrisport.shared.SurfaceLighter
 import com.atulit.nutrisport.shared.TextPrimary
@@ -271,16 +272,52 @@ fun ManageProductScreen(
                                 )
                             },
                             onSuccess = {
-                                AsyncImage(
-                                    modifier = Modifier.fillMaxSize(),
-                                    model = ImageRequest.Builder(
-                                        LocalPlatformContext.current
-                                    ).data(screenState.thumbnail)
-                                        .crossfade(enable = true)
-                                        .build(),
-                                    contentDescription = "Product Thumbnail image",
-                                    contentScale = ContentScale.Crop
-                                )
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                ) {
+                                    AsyncImage(
+                                        modifier = Modifier.fillMaxSize(),
+                                        model = ImageRequest.Builder(
+                                            LocalPlatformContext.current
+                                        ).data(screenState.thumbnail)
+                                            .crossfade(enable = true)
+                                            .build(),
+                                        contentDescription = "Product Thumbnail image",
+                                        contentScale = ContentScale.Crop
+                                    )
+
+                                    Box(
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(6.dp))
+                                            .padding(
+                                                top = 12.dp,
+                                                end = 12.dp
+                                            )
+                                            .background(SurfaceBrand)
+                                            .padding(all = 12.dp)
+                                            .clickable {
+                                                viewModel.deleteImageFromStorage(
+                                                    onSuccess = {
+                                                        messageBarState.addSuccess("Thumbnail removed successfully")
+                                                    },
+                                                    onError = { message ->
+                                                        messageBarState.addError(
+                                                            message
+                                                        )
+                                                    }
+                                                )
+                                            },
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(14.dp),
+                                            painter = painterResource(Resources.Icon.Delete),
+                                            contentDescription = "Add Image",
+                                            tint = IconPrimary
+                                        )
+                                    }
+                                }
 
                             }
 
