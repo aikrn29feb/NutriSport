@@ -1,7 +1,7 @@
 package com.atulit.nutrisport.admin_panel
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -22,7 +22,8 @@ import com.atulit.nutrisport.shared.IconPrimary
 import com.atulit.nutrisport.shared.Resources
 import com.atulit.nutrisport.shared.Surface
 import com.atulit.nutrisport.shared.TextPrimary
-import com.atulit.nutrisport.shared.component.InfoCard
+import com.atulit.nutrisport.shared.component.ProductCard
+import com.atulit.nutrisport.shared.domain.Product
 import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -106,7 +107,7 @@ fun AdminPanelScreen(
 
         }) { padding ->
 
-        InfoCard(
+       /* InfoCard(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
@@ -116,7 +117,33 @@ fun AdminPanelScreen(
             title = "Admin Panel",
             subTitle = "This is the admin panel",
             image = Resources.Image.ShoppingCart
+        )*/
+        val product = Product(
+            id = "1",
+            title = "Product 1",
+            description = "This is the first product \n " +
+                    "It has to cover atleast 3 lines \n " +
+                    "out of which 2 are already covered",
+            thumbnail = "https://picsum.photos/200",
+            category = "Category 1",
+            flavors = listOf("Flavor 1", "Flavor 2"),
+            weight = 100,
+            price = 10.0
         )
+
+        ProductCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = padding.calculateTopPadding(),
+                    bottom = padding.calculateBottomPadding()
+                ),
+            product = product,
+            onClick = {
+                navigateToManageProduct(it)
+            }
+        )
+
 
 
     }

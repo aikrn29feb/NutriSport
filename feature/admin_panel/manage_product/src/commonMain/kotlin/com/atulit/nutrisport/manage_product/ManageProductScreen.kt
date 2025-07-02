@@ -61,6 +61,7 @@ import com.atulit.nutrisport.shared.component.ErrorCard
 import com.atulit.nutrisport.shared.component.LoadingCard
 import com.atulit.nutrisport.shared.component.PrimaryButton
 import com.atulit.nutrisport.shared.component.dialog.CategoriesDialog
+import com.atulit.nutrisport.shared.domain.ProductCategory
 import com.atulit.nutrisport.shared.util.DisplayResult
 import com.atulit.nutrisport.shared.util.RequestState
 import org.jetbrains.compose.resources.painterResource
@@ -344,22 +345,27 @@ fun ManageProductScreen(
                             showCategoriesDialog = true
                         }
                     )
+                    AnimatedVisibility(
+                        visible = screenState.category != ProductCategory.Accessories
+                    ) {
 
-                    CustomTextField(
-                        value = "${screenState.weight ?: ""}",
-                        onValueChange = { viewModel.updateWeight(it.toIntOrNull() ?: 0) },
-                        placeholder = "Weight (Optional)",
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
+                        CustomTextField(
+                            value = "${screenState.weight ?: ""}",
+                            onValueChange = { viewModel.updateWeight(it.toIntOrNull() ?: 0) },
+                            placeholder = "Weight ",
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number
+                            )
                         )
-                    )
 
-                    CustomTextField(
-                        value = screenState.flavors,
-                        onValueChange = viewModel::updateFlavors,
-                        placeholder = "Flavors (Optional)",
-                    )
+                        CustomTextField(
+                            value = screenState.flavors,
+                            onValueChange = viewModel::updateFlavors,
+                            placeholder = "Flavors ",
+                        )
 
+
+                    }
                     CustomTextField(
                         value = screenState.price.toString(),
                         onValueChange = { value ->
