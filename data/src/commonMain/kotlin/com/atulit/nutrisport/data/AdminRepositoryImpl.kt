@@ -2,11 +2,16 @@ package com.atulit.nutrisport.data
 
 import com.atulit.nutrisport.data.domain.AdminRepository
 import com.atulit.nutrisport.shared.domain.Product
+import com.atulit.nutrisport.shared.util.RequestState
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
+import dev.gitlive.firebase.firestore.Direction
 import dev.gitlive.firebase.firestore.firestore
 import dev.gitlive.firebase.storage.File
 import dev.gitlive.firebase.storage.storage
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withTimeout
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -52,6 +57,7 @@ class AdminRepositoryImpl : AdminRepository {
                     imagePath.getDownloadUrl()
                 }
             } catch (e: Exception) {
+                println("Error while uploading image to storage : ${e.message}")
                 null
             }
         } else null
@@ -75,6 +81,54 @@ class AdminRepositoryImpl : AdminRepository {
             onError("Error while deleting image from storage : ${e.message}")
         }
 
+    }
+
+    override fun readLastTenProducts(): Flow<RequestState<List<Product>>> = channelFlow {
+        try {
+            val userId = getCurrentUserId()
+            if (userId != null) {
+                val database = Firebase.firestore
+                database.collection(
+                    collectionPath = "products"
+                )
+                    .orderBy("createdAt", Direction.DESCENDING )
+                    .limit(10)
+                    .snapshots
+                    .collectLatest { query ->
+                        val products = query.documents.map { document ->
+                            Product(
+                                id = document.id,
+                                title = document.get(field = "title"),
+                                createdAt = document.get(field = "createdAt"),
+                                description = document.get(field = "description"),
+                                thumbnail = document.get(field = "thumbnail"),
+                                category = document.get(field = "category"),
+                                flavors = document.get(field = "flavors"),
+                                weight = document.get(field = "weight"),
+                                price = document.get(field = "price"),
+                                isPopular = document.get(field = "isPopular"),
+                                isNew = document.get(field = "isNew"),
+                                isDiscounted = document.get(field = "isDiscounted"),
+                            )
+                        }
+                        send(
+                            RequestState.Success(products)
+                        )
+                    }
+            } else {
+                send(
+                    RequestState.Error("Products are not available")
+                )
+            }
+
+        } catch (e: Exception) {
+            send(
+                RequestState.Error(
+                    "Error while reading last 10 products" +
+                            "from the database - ${e.message.toString()}"
+                )
+            )
+        }
     }
 
 

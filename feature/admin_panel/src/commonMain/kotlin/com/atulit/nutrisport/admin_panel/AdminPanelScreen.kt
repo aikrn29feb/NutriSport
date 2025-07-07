@@ -1,8 +1,11 @@
 package com.atulit.nutrisport.admin_panel
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -12,9 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.atulit.nutrisport.shared.BebasNeueFont
 import com.atulit.nutrisport.shared.ButtonPrimary
 import com.atulit.nutrisport.shared.FontSize
@@ -22,9 +27,12 @@ import com.atulit.nutrisport.shared.IconPrimary
 import com.atulit.nutrisport.shared.Resources
 import com.atulit.nutrisport.shared.Surface
 import com.atulit.nutrisport.shared.TextPrimary
+import com.atulit.nutrisport.shared.component.InfoCard
+import com.atulit.nutrisport.shared.component.LoadingCard
 import com.atulit.nutrisport.shared.component.ProductCard
-import com.atulit.nutrisport.shared.domain.Product
+import com.atulit.nutrisport.shared.util.DisplayResult
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +41,10 @@ fun AdminPanelScreen(
     navigateToManageProduct: (String?) -> Unit,
 
     ) {
+
+    val viewModel = koinViewModel<AdminPanelViewModel>()
+    val products = viewModel.products.collectAsState()
+
     val selectedDestination = remember { mutableStateOf("Admin Panel") }
 
     Scaffold(
@@ -107,18 +119,72 @@ fun AdminPanelScreen(
 
         }) { padding ->
 
-       /* InfoCard(
+        products.value.DisplayResult(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(
                     top = padding.calculateTopPadding(),
                     bottom = padding.calculateBottomPadding()
                 ),
-            title = "Admin Panel",
-            subTitle = "This is the admin panel",
-            image = Resources.Image.ShoppingCart
-        )*/
-        val product = Product(
+            onLoading = {
+                LoadingCard(
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
+            },
+            onSuccess = { lastProducts ->
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            all = 12.dp
+                        ),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(
+                        count = lastProducts.size,
+                        key = { index ->
+                            lastProducts[index].id
+                        }
+                    ) { product ->
+                        ProductCard(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            product = lastProducts[product],
+                            onClick = {}
+                        )
+
+
+                    }
+
+
+                }
+
+            },
+            onError = { message ->
+                InfoCard(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    title = "Oops!",
+                    subTitle = message,
+                    image = Resources.Image.Cat
+                )
+
+            }
+        )
+
+
+        /* InfoCard(
+             modifier = Modifier
+                 .fillMaxSize()
+                 .padding(
+                     top = padding.calculateTopPadding(),
+                     bottom = padding.calculateBottomPadding()
+                 ),
+             title = "Admin Panel",
+             subTitle = "This is the admin panel",
+             image = Resources.Image.ShoppingCart
+         )*/
+        /*val product = Product(
             id = "1",
             title = "Product 1",
             description = "This is the first product \n " +
@@ -142,8 +208,7 @@ fun AdminPanelScreen(
             onClick = {
                 navigateToManageProduct(it)
             }
-        )
-
+        )*/
 
 
     }

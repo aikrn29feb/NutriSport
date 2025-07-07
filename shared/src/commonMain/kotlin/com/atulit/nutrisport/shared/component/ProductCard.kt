@@ -67,6 +67,7 @@ fun ProductCard(
         ),
         onClick =
             {
+                //onClick(product.id)
                 println("Product Card Clicked")
             }
 
@@ -92,6 +93,7 @@ fun ProductCard(
             AsyncImage(
                 modifier = Modifier
                     .width(120.dp)
+                    //.height(IntrinsicSize.Min)
                     .clip(RoundedCornerShape(12.dp))
                     .border(
                         width = 1.dp,
@@ -126,13 +128,12 @@ fun ProductCard(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .alpha(alpha = Alpha.HALF),
+                        .alpha(alpha = Alpha.SEVENTY_PERCENT),
                     text = product.description,
-                    color = TextPrimary.copy(alpha = Alpha.HALF),
-                    fontFamily = RobotoCondensedFont(),
-                    fontWeight = FontWeight.Medium,
+                    color = TextPrimary.copy(alpha = Alpha.SEVENTY_PERCENT),
                     fontSize = FontSize.REGULAR,
                     maxLines = 3,
+                    lineHeight = FontSize.REGULAR * 1.3,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -149,23 +150,26 @@ fun ProductCard(
                         /*if (ProductCategory.valueOf(category) == ProductCategory.Accessories) {
                             Spacer(modifier = Modifier.weight(1f))
                         } else {*/
-                            Row {
-                                Icon(
-                                    modifier = Modifier.size(14.dp),
-                                    painter = painterResource(Resources.Icon.Weight),
-                                    contentDescription = "Weight Icon",
-                                    tint = TextPrimary
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            //horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(14.dp),
+                                painter = painterResource(Resources.Icon.Weight),
+                                contentDescription = "Weight Icon",
+                                tint = TextPrimary
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
 
-                                Text(
-                                    text = product.weight.toString() + "gm",
-                                    color = TextPrimary,
-                                    fontSize = FontSize.EXTRA_SMALL
-                                )
+                            Text(
+                                text = product.weight.toString() + " g",
+                                color = TextPrimary,
+                                fontSize = FontSize.EXTRA_SMALL
+                            )
 
-                            }
-                       // }
+                        }
+                        // }
 
                     }
 
