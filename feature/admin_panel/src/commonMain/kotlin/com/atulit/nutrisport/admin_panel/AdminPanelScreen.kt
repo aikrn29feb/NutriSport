@@ -39,8 +39,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun AdminPanelScreen(
     navigateBack: () -> Unit,
     navigateToManageProduct: (String?) -> Unit,
-
-    ) {
+) {
 
     val viewModel = koinViewModel<AdminPanelViewModel>()
     val products = viewModel.products.collectAsState()
@@ -150,7 +149,9 @@ fun AdminPanelScreen(
                             modifier = Modifier
                                 .fillMaxWidth(),
                             product = lastProducts[product],
-                            onClick = {}
+                            onClick = {
+                                navigateToManageProduct(lastProducts[product].id)
+                            }
                         )
 
 

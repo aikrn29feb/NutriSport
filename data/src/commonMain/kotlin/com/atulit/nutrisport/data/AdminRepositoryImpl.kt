@@ -91,7 +91,7 @@ class AdminRepositoryImpl : AdminRepository {
                 database.collection(
                     collectionPath = "products"
                 )
-                    .orderBy("createdAt", Direction.DESCENDING )
+                    .orderBy("createdAt", Direction.DESCENDING)
                     .limit(10)
                     .snapshots
                     .collectLatest { query ->
@@ -128,6 +128,48 @@ class AdminRepositoryImpl : AdminRepository {
                             "from the database - ${e.message.toString()}"
                 )
             )
+        }
+    }
+
+    override suspend fun readProductById(productId: String): RequestState<Product> {
+        return try {
+            val userId = getCurrentUserId()
+
+            userId?.let {
+                val database = Firebase.firestore
+                val productCollection = database.collection(
+                    collectionPath = "products"
+                )
+                val productDocument = productCollection.document(
+                    documentPath = productId
+                ).get()
+
+                if (productDocument.exists) {
+                    val product = Product(
+                        id = productDocument.id,
+                        title = productDocument.get(field = "title"),
+                        createdAt = productDocument.get(field = "createdAt"),
+                        description = productDocument.get(field = "description"),
+                        thumbnail = productDocument.get(field = "thumbnail"),
+                        category = productDocument.get(field = "category"),
+                        flavors = productDocument.get(field = "flavors"),
+                        weight = productDocument.get(field = "weight"),
+                        price = productDocument.get(field = "price"),
+                        isPopular = productDocument.get(field = "isPopular"),
+                        isNew = productDocument.get(field = "isNew"),
+                        isDiscounted = productDocument.get(field = "isDiscounted"),
+                    )
+
+                    RequestState.Success(product)
+                } else {
+                    return RequestState.Error("Product is not available")
+                }
+
+
+            } ?: RequestState.Error("User is not available")
+
+        } catch (e: Exception) {
+            RequestState.Error("Error while reading a product : ${e.message}")
         }
     }
 

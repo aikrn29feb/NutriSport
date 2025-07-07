@@ -148,7 +148,7 @@ fun ManageProductScreen(
                             val res = if (id == null)
                                 Resources.Icon.BackArrow
                             else
-                                Resources.Icon.VerticalMenu
+                                Resources.Icon.BackArrow
                             Icon(
                                 painter = painterResource(res),
                                 contentDescription = "Action Icon",
@@ -276,6 +276,7 @@ fun ManageProductScreen(
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize(),
+                                    contentAlignment = Alignment.TopEnd
                                 ) {
                                     AsyncImage(
                                         modifier = Modifier.fillMaxSize(),
