@@ -20,6 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -81,6 +83,7 @@ fun ManageProductScreen(
     val thumbnailUploaderState = viewModel.thumbnailUploaderState
     val messageBarState = rememberMessageBarState()
     var showCategoriesDialog by remember { mutableStateOf(false) }
+    var showDropDownMenu by remember { mutableStateOf(false) }
 
     val photoPicker = koinInject<PhotoPicker>()
     photoPicker.InitializePhotoPicker(
@@ -126,20 +129,56 @@ fun ManageProductScreen(
                         )
                     },
                     actions = {
-                        IconButton(onClick = {
+                        id.takeIf { it != null }?.let {
+                            Box {
+                                IconButton(onClick = {
+                                    showDropDownMenu = true
+                                }) {
+                                    val res = if (id == null)
+                                        Resources.Icon.Close
+                                    else
+                                        Resources.Icon.VerticalMenu
+                                    Icon(
+                                        painter = painterResource(res),
+                                        contentDescription = "Search Icon",
+                                        tint = TextPrimary
+                                    )
+                                }
 
-                        }) {
-                            val res = if (id == null)
-                                Resources.Icon.Close
-                            else
-                                Resources.Icon.VerticalMenu
-                            Icon(
-                                painter = painterResource(res),
-                                contentDescription = "Search Icon",
-                                tint = TextPrimary
-                            )
+                                DropdownMenu(
+                                    containerColor = SurfaceLighter,
+                                    expanded = showDropDownMenu,
+                                    onDismissRequest = { showDropDownMenu = false }
+                                ) {
+                                    DropdownMenuItem(
+                                        text = { Text("Delete", color = TextPrimary) },
+                                        onClick = {
+                                            showDropDownMenu = false
+                                            viewModel.deleteProduct(
+                                                onSuccess = {
+                                                    messageBarState.addSuccess("Product deleted successfully")
+                                                    navigateBack()
+                                                },
+                                                onError = { message ->
+                                                    messageBarState.addError(message)
+                                                }
+                                            )
+                                        },
+                                        leadingIcon = {
+                                            Icon(
+                                                modifier = Modifier.size(14.dp),
+                                                painter = painterResource(Resources.Icon.Delete),
+                                                contentDescription = "Delete Icon",
+                                                tint = TextPrimary
+                                            )
+                                        }
+
+                                    )
+
+
+                                }
+                            }
                         }
-
                     },
                     navigationIcon = {
                         IconButton(onClick = {
