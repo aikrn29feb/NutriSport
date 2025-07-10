@@ -34,7 +34,7 @@ class AdminRepositoryImpl : AdminRepository {
                 productCollection.document(
                     product.id
                 ).set(
-                    product
+                    product.copy(title = product.title.lowercase())
                 )
 
                 onSuccess()
@@ -112,7 +112,11 @@ class AdminRepositoryImpl : AdminRepository {
                             )
                         }
                         send(
-                            RequestState.Success(products)
+                            RequestState.Success(
+                                products
+                                    .map {
+                                        it.copy(title = it.title.uppercase())
+                                    })
                         )
                     }
             } else {
@@ -160,7 +164,7 @@ class AdminRepositoryImpl : AdminRepository {
                         isDiscounted = productDocument.get(field = "isDiscounted"),
                     )
 
-                    RequestState.Success(product)
+                    RequestState.Success(product.copy(title = product.title.uppercase()))
                 } else {
                     return RequestState.Error("Product is not available")
                 }
@@ -225,7 +229,7 @@ class AdminRepositoryImpl : AdminRepository {
                 if (existingProduct.exists) {
                     productCollection.document(
                         documentPath = product.id
-                    ).update(product)
+                    ).update(product.copy(title = product.title.lowercase()))
                     onSuccess()
                 } else {
                     onError("Selected Product not available")
@@ -272,6 +276,54 @@ class AdminRepositoryImpl : AdminRepository {
             onError("Error while deleting the product : ${e.message}")
         }
     }
+
+    override fun searchProductsByTitle(query: String): Flow<RequestState<List<Product>>> =
+        channelFlow {
+            try {
+                val userId = getCurrentUserId()
+                userId?.let {
+                    val database = Firebase.firestore
+
+                    val queryText = query.trim().lowercase()//.split(" ")
+                   // val endText = queryText + "\uf8ff" // used in firestore
+                    database.collection(
+                        collectionPath = "products"
+                    ).orderBy(field = "title")
+                       // .startAt(queryText)
+                        //.endAt(endText)
+                        .snapshots
+                        .collectLatest { query ->
+                            val products = query.documents.map { document ->
+                                Product(
+                                    id = document.id,
+                                    title = document.get(field = "title"),
+                                    createdAt = document.get(field = "createdAt"),
+                                    description = document.get(field = "description"),
+                                    thumbnail = document.get(field = "thumbnail"),
+                                    category = document.get(field = "category"),
+                                    flavors = document.get(field = "flavors"),
+                                    weight = document.get(field = "weight"),
+                                    price = document.get(field = "price"),
+                                    isPopular = document.get(field = "isPopular"),
+                                    isNew = document.get(field = "isNew"),
+                                    isDiscounted = document.get(field = "isDiscounted"),
+                                )
+                            }
+                            send(RequestState.Success(
+                                products
+                                    .filter { it.title.contains(queryText) }
+                                    .map { it.copy(title = it.title.uppercase()) }
+                            ))
+
+
+                        }
+
+                } ?: send(RequestState.Error("User is not available"))
+
+            } catch (e: Exception) {
+                send(RequestState.Error("Error while searching product : ${e.message}"))
+            }
+        }
 
 
     private fun extractFirebaseStoragePath(downloadUrl: String): String? {

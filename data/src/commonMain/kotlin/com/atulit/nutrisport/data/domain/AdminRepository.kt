@@ -45,4 +45,9 @@ interface AdminRepository {
         onError: (String) -> Unit
     )
 
+    fun searchProductsByTitle(
+        query:String,
+
+    ) : Flow<RequestState<List<Product>>>
+
 }
