@@ -13,7 +13,8 @@ data class Customer(
     val postalCode: Int? = null,
     val address: String? = null,
     val phoneNumber: PhoneNumber? = null,
-    val cart: List<CartItem> = emptyList()
+    val cart: List<CartItem> = emptyList(),
+    val isAdmin: Boolean = false // Add isAdmin property in Fire store as Sub collection
 
     )
 

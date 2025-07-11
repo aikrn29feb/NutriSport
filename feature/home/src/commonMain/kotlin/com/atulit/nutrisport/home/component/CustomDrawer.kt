@@ -1,5 +1,6 @@
 package com.atulit.nutrisport.home.component
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,9 +17,12 @@ import com.atulit.nutrisport.shared.BebasNeueFont
 import com.atulit.nutrisport.shared.FontSize
 import com.atulit.nutrisport.shared.TextPrimary
 import com.atulit.nutrisport.shared.TextSecondary
+import com.atulit.nutrisport.shared.domain.Customer
+import com.atulit.nutrisport.shared.util.RequestState
 
 @Composable
 fun CustomDrawer(
+    customer: RequestState<Customer>,
     onProfileClick: () -> Unit,
     onContactUsClick: () -> Unit,
     onSignOutClick: () -> Unit,
@@ -64,12 +68,19 @@ fun CustomDrawer(
             Spacer(modifier = Modifier.height(12.dp))
         }
         Spacer(modifier = Modifier.weight(1f))
-        DrawerItemCard(
-            drawerItem = DrawerItem.Admin,
-            onClick = {
-                onAdminPanelClick()
-            },
-        )
+        AnimatedContent(
+            targetState = customer
+        ) { customerState ->
+            if (customerState.isSuccess() && customerState.getSuccessData().isAdmin) {
+                DrawerItemCard(
+                    drawerItem = DrawerItem.Admin,
+                    onClick = {
+                        onAdminPanelClick()
+                    },
+                )
+            }
+
+        }
         Spacer(modifier = Modifier.height(24.dp))
     }
 }
