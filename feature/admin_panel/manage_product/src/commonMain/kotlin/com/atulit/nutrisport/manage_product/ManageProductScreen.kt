@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -26,6 +28,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -55,6 +58,7 @@ import com.atulit.nutrisport.shared.Surface
 import com.atulit.nutrisport.shared.SurfaceBrand
 import com.atulit.nutrisport.shared.SurfaceDarker
 import com.atulit.nutrisport.shared.SurfaceLighter
+import com.atulit.nutrisport.shared.SurfaceSecondary
 import com.atulit.nutrisport.shared.TextPrimary
 import com.atulit.nutrisport.shared.TextSecondary
 import com.atulit.nutrisport.shared.component.AlertTextField
@@ -424,6 +428,95 @@ fun ManageProductScreen(
                     )
                     Spacer(modifier = Modifier.height(24.dp))
 
+                    Column(
+                        modifier = Modifier
+                            .padding(start = 12.dp)
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(24.dp)
+                    ) {
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Newly added",
+                                color = TextPrimary,
+                                fontSize = FontSize.REGULAR
+                            )
+
+                            Switch(
+                                checked = screenState.isNewlyAdded,
+                                onCheckedChange = {
+                                    viewModel.updateIsNewlyAdded(it)
+                                },
+                                colors = SwitchDefaults.colors(
+                                    checkedTrackColor = SurfaceSecondary,
+                                    uncheckedTrackColor = SurfaceDarker,
+                                    checkedThumbColor = Surface,
+                                    uncheckedThumbColor = Surface,
+                                    checkedBorderColor = Surface,
+                                    uncheckedBorderColor = Surface,
+                                )
+                            )
+
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Popular",
+                                color = TextPrimary,
+                                fontSize = FontSize.REGULAR
+                            )
+
+                            Switch(
+                                checked = screenState.isPopular,
+                                onCheckedChange = viewModel::updateIsPopular,
+                                colors = SwitchDefaults.colors(
+                                    checkedTrackColor = SurfaceSecondary,
+                                    uncheckedTrackColor = SurfaceDarker,
+                                    checkedThumbColor = Surface,
+                                    uncheckedThumbColor = Surface,
+                                    checkedBorderColor = Surface,
+                                    uncheckedBorderColor = Surface,
+                                )
+                            )
+
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Discounted",
+                                color = TextPrimary,
+                                fontSize = FontSize.REGULAR
+                            )
+
+                            Switch(
+                                checked = screenState.isDiscounted,
+                                onCheckedChange = viewModel::updateIsDiscounted,
+                                colors = SwitchDefaults.colors(
+                                    checkedTrackColor = SurfaceSecondary,
+                                    uncheckedTrackColor = SurfaceDarker,
+                                    checkedThumbColor = Surface,
+                                    uncheckedThumbColor = Surface,
+                                    checkedBorderColor = Surface,
+                                    uncheckedBorderColor = Surface,
+                                )
+                            )
+
+                        }
+
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
 
                 }
 
